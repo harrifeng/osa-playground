@@ -26,23 +26,25 @@ Vagrant.configure(2) do |config|
         controller.vm.provision "shell", path: "./mountdisk.sh"
     end
 
-    config.vm.define "node1" do |node1|
-        node1.vm.box = "ubuntu/trusty64"
-        node1.vm.hostname = "node1"
+    (1..4).each do |i|
+        config.vm.define "node#{i}" do |node|
+            node.vm.box = "ubuntu/trusty64"
+            node.vm.hostname = "node#{i}"
+            
+            node.vm.network "private_network", ip: "192.168.0.1#{i}"
+            node.vm.network "public_network"
         
-        node1.vm.network "private_network", ip: "192.168.0.11"
-        node1.vm.network "public_network"
-    
-        node1.vm.provider "virtualbox" do |vb|
-            vb.name = "node1"
-            vb.memory = "2048"
-            vb.cpus = "2"
-            file_to_disk = './node1_disk.vdi'
-    
-            vb.customize ['createhd', '--filename', file_to_disk, '--size', 50 * 1024]
-            vb.customize ['storageattach', :id, '--storagectl', 'SATAController', '--port', 1, '--device', 0, '--type', 'hdd', '--medium', file_to_disk]
+            node.vm.provider "virtualbox" do |vb|
+                vb.name = "node#{i}"
+                vb.memory = "2048"
+                vb.cpus = "2"
+                file_to_disk = "./node#{i}_disk.vdi"
+        
+                vb.customize ['createhd', '--filename', file_to_disk, '--size', 50 * 1024]
+                vb.customize ['storageattach', :id, '--storagectl', 'SATAController', '--port', 1, '--device', 0, '--type', 'hdd', '--medium', file_to_disk]
+            end
+        
+            node.vm.provision "shell", path: "./mountdisk.sh"
         end
-    
-        node1.vm.provision "shell", path: "./mountdisk.sh"
     end
 end
