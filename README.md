@@ -15,6 +15,8 @@ After you have cloned this repository, run...
 	$ vagrant init
 	$ vagrant up
   
+**Note: Currently, you will need to select your host's network adapter to be used by the NAT interface for the VMs.  I believe this to be a default configuration by Vagrant and will not be used in the configuration of the OpenStack network.**
+
 You should now have a controller VM and several node VMs running in VirtualBox.
 
 	$ vagrant status
