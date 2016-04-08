@@ -6,27 +6,31 @@
 # backwards compatibility). Please don't change it unless you know what
 # you're doing.
 Vagrant.configure(2) do |config|
-    config.vm.define "controller" do |controller|
-        controller.vm.box = "ubuntu/trusty64"
-        controller.vm.hostname = "controller"
+    (1..3).each do |i|
+        config.vm.define "controller#{i}" do |controller|
+            controller.vm.box = "ubuntu/trusty64"
+            controller.vm.hostname = "controller#{i}"
+            
+            controller.vm.network "private_network", ip: "192.168.0.#{i+1}"
+            controller.vm.network "public_network"
         
-        controller.vm.network "private_network", ip: "192.168.0.10"
-        controller.vm.network "public_network"
-    
-        controller.vm.provider "virtualbox" do |vb|
-            vb.name = "controller"
-            vb.memory = "2048"
-            vb.cpus = "2"
-            file_to_disk = './controller_disk.vdi'
-    
-            vb.customize ['createhd', '--filename', file_to_disk, '--size', 50 * 1024]
-            vb.customize ['storageattach', :id, '--storagectl', 'SATAController', '--port', 1, '--device', 0, '--type', 'hdd', '--medium', file_to_disk]
+            controller.vm.provider "virtualbox" do |vb|
+                vb.name = "controller#{i}"
+                vb.memory = "2048"
+                vb.cpus = "2"
+                file_to_disk = "./controller#{i}_disk.vdi"
+        
+                vb.customize ['createhd', '--filename', file_to_disk, '--size', 50 * 1024]
+                vb.customize ['storageattach', :id, '--storagectl', 'SATAController', '--port', 1, '--device', 0, '--type', 'hdd', '--medium', file_to_disk]
+            end
+
+            controller.vm.provision "shell", path: "./mountdisk.sh"
+
         end
     
-        controller.vm.provision "shell", path: "./mountdisk.sh"
     end
 
-    (1..4).each do |i|
+    (1..2).each do |i|
         config.vm.define "node#{i}" do |node|
             node.vm.box = "ubuntu/trusty64"
             node.vm.hostname = "node#{i}"
@@ -45,6 +49,7 @@ Vagrant.configure(2) do |config|
             end
         
             node.vm.provision "shell", path: "./mountdisk.sh"
+
         end
     end
 end

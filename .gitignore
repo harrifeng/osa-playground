@@ -53,6 +53,7 @@ Thumbs.db
 ######################
 *.vdi
 
-# OTHER #
+# Project Specific #
 *_key
 *_key.pub
+pushkeys.sh
