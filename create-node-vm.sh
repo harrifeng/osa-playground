@@ -12,7 +12,7 @@ do
 case $i in
     -n=*|--name=*)
     NAME="${i#*=}"
-    HOME_DIR="/home/${USER}/VirtualBox\ VMs/${NAME}"
+    HOME_DIR="/${HOME}/VirtualBox\ VMs/${NAME}"
     shift # past argument=value
     ;;
     -d=*|--disk=*)
@@ -67,8 +67,8 @@ then
     VBoxManage storagectl ${NAME} --name "IDE Controller" --add ide
     VBoxManage storageattach ${NAME} --storagectl "IDE Controller" --port 0 --device 0 --type dvddrive --medium ${ISO}
     VBoxManage modifyvm ${NAME} --boot1 disk --boot2 dvd --boot3 none --boot4 none
-    VBoxManage modifyvm ${NAME} --nic1 nat --nictype1 82545EM --cableconnected1 on
-    VBoxManage modifyvm ${NAME} --nic2 hostonly --nictype2 82545EM --hostonlyadapter2 ${NETWORK} --cableconnected2 on
+    VBoxManage modifyvm ${NAME} --nic1 nat --cableconnected1 on
+    VBoxManage modifyvm ${NAME} --nic2 hostonly --hostonlyadapter2 ${NETWORK} --cableconnected2 on
 else
     echo "--name parameter is required."
 fi
