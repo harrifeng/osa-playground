@@ -12,7 +12,10 @@ Vagrant.configure(2) do |config|
             controller.vm.hostname = "controller#{i}"
             
             controller.vm.network "private_network", ip: "192.168.0.#{i+1}"
-            controller.vm.network "public_network"
+            controller.vm.network "public_network",
+                :dev => "br-ex",
+                :mode => "bridge",
+                :type => "bridge"
         
             controller.vm.provider "virtualbox" do |vb|
                 vb.name = "controller#{i}"

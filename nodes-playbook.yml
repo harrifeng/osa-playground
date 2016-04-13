@@ -1,0 +1,34 @@
+#!/usr/bin/env ansible-playbook -i ./hosts
+---
+- hosts: nodes
+  become: yes
+  become_user: root
+  tasks:
+    - name: Install bridge-utils
+      apt: name=bridge-utils state=present
+    - name: Install debootstrap
+      apt: name=debootstrap state=present
+    - name: Install ifenslave
+      apt: name=ifenslave state=present
+    - name: Install ifenslave-2.6
+      apt: name=ifenslave-2.6 state=present
+    - name: Install lsof
+      apt: name=lsof state=present
+    - name: Install lvm2
+      apt: name=lvm2 state=present
+    - name: Install ntp
+      apt: name=ntp state=present
+    - name: Install ntpdate
+      apt: name=ntpdate state=present
+    - name: Install openssh-server
+      apt: name=openssh-server state=present
+    - name: Install sudo
+      apt: name=sudo state=present
+    - name: Install tcpdump
+      apt: name=tcpdump state=present
+    - name: Install vlan
+      apt: name=vlan state=present
+    - name: Add VLAN module
+      shell: echo '8021q' >> /etc/modules
+    - name: Add bonding module
+      shell: echo 'bonding' >> /etc/modules
