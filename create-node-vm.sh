@@ -1,6 +1,6 @@
 #!/bin/bash
 # DEFAULTS
-DISK_SIZE="10"
+DISK_SIZE="20"
 MEMORY="2048"
 OS_TYPE="Ubuntu_64"
 STORAGE="50"
@@ -14,7 +14,7 @@ do
 case $i in
     -n=*|--name=*)
     NAME="${i#*=}"
-    HOME_DIR="/${HOME}/VirtualBox\ VMs/${NAME}"
+    HOME_DIR="/${HOME}/VirtualBox VMs/${NAME}"
     shift # past argument=value
     ;;
     -d=*|--disk=*)
