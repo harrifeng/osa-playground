@@ -46,7 +46,7 @@ Installing Ubuntu for the playground can be performed by attaching an ISO to the
 #### Install required software packages
 In the spirit of using Ansible, a [playbook](./nodes-playbook.yml) was developed to prepare the nodes for deployment.  As an added bonus running the the playbook will identify any issues you may have with passwordless ssh, internet connectivity, etc... before you run the OpenStack Ansible playbooks.  
 
-**NOTE: You will need to update the [hosts](./hosts) file with the IP addresses that correspond to your nodes.  Also, it is recommended that you run Ansible from a separate deployment host.**
+**NOTE: You will need to update the [hosts](./hosts) file with the IP addresses and usernames that correspond to your nodes.  Also, it is recommended that you run Ansible from a separate deployment host.**
 
 ```
 $ ansible-playbook --private-key={key filename} -i ./hosts nodes-playbook.yml
@@ -59,8 +59,52 @@ ansible all --private-key={key filename} -i ./hosts -a '/sbin/reboot' --become -
 ```
 
 #### Configure Networking
+First we need to configure the "front channel" bridge, br-host.  This will be on eth0 if you have been using the scripts and conventions of this repo.  In the following snippet, the eth0 interface is commented out and the _source_ line has been added.
+```
+# This file describes the network interfaces available on your system
+# and how to activate them. For more information, see interfaces(5).
 
+# The loopback network interface
+auto lo
+iface lo inet loopback
 
+#auto eth0
+#iface eth0 inet static
+#  address 192.168.0.101
+#  netmask 255.255.255.0
+
+# The primary network interface
+auto eth2
+iface eth2 inet dhcp
+
+source /etc/network/interfaces.d/*
+```
+
+Next the file **/etc/network/interfaces.d/ifcfg-br-host**...
+```
+auto br-host
+  iface br-host inet static
+  bridge_ports eth0
+  address 192.168.0.101
+  netmask 255.255.255.0
+  bridge_stp off
+```
+
+Restart the interfaces...
+```
+$ ifconfig eth0 down; ifup br-host
+```
+
+You should not have to re-login, but you may.
+
+Verify that you have a valid br-host with the static IP.
+```
+$ ip a
+```
+
+---
+**STOP HERE!**
+---
 
 ### Vagrant Approach (development on hold)
 **NOTE: Using Vagrant introduced a few challenges that were killing progress toward the goal.  So, the testbed will be simplified to use straight VirtualBox and Ubuntu 14.04.  The Vagrant approach may be revisited and the files in this repository associated with approach will remain but will not be used until the challenges are resolved.**
