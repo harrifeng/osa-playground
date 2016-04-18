@@ -35,6 +35,30 @@ These instructions are following the steps prescribed by http://docs.openstack.o
 
 
 ### Target Nodes
+The basic steps for preparing the nodes for OpenStack Ansible are:
+1. Install Ubuntu
+2. Install required software packages
+3. Configure networking
+
+#### Install Ubuntu
+Installing Ubuntu for the playground can be performed by attaching an ISO to the VM prior to start.  Following the onscreen directions will get you a running Ubunut VM.  If you use the [script](./create-node-vm.sh) that creates the VM (create-node-vm.sh), then you need to choose __eth2__ as the primary interface.  Otherwise, the install will not complete successfully as the internet will be unreachable.  Once the base install is complete, you may need to configure eth0 so that you can make use of the [playbook](./nodes-playbook.yml) in the next step.
+
+#### Install required software packages
+In the spirit of using Ansible, a [playbook](./nodes-playbook.yml) was developed to prepare the nodes for deployment.  As an added bonus running the the playbook will identify any issues you may have with passwordless ssh, internet connectivity, etc... before you run the OpenStack Ansible playbooks.  
+
+**NOTE: You will need to update the [hosts](./hosts) file with the IP addresses that correspond to your nodes.  Also, it is recommended that you run Ansible from a separate deployment host.**
+
+```
+$ ansible-playbook --private-key={key filename} -i ./hosts nodes-playbook.yml
+```
+
+Once the playbook is successful for all nodes, reboot the nodes
+
+```
+ansible all --private-key={key filename} -i ./hosts -a '/sbin/reboot' --become --become-user root
+```
+
+#### Configure Networking
 
 
 
