@@ -39,6 +39,7 @@ The basic steps for preparing the nodes for OpenStack Ansible are:
  1. Install Ubuntu
  2. Install required software packages
  3. Configure networking
+ 4. Setup LVM on node1
 
 #### Install Ubuntu
 Installing Ubuntu for the playground can be performed by attaching an ISO to the VM prior to start.  Following the onscreen directions will get you a running Ubunut VM.  If you use the [script](./create-node-vm.sh) that creates the VM (create-node-vm.sh), then you need to choose __eth2__ as the primary interface.  Otherwise, the install will not complete successfully as the internet will be unreachable.  Once the base install is complete, you may need to configure eth0 so that you can make use of the [playbook](./nodes-playbook.yml) in the next step.
@@ -100,6 +101,13 @@ You should not have to re-login, but you may.
 Verify that you have a valid br-host with the static IP.
 ```
 $ ip a
+```
+
+#### Configure LVM on Node1
+We will let the first node be the Cinder storage node...
+```
+$ pvcreate --metadatasize 2048 /dev/sdb
+$ vgcreate cinder-volumes /dev/sdb
 ```
 
 ---
