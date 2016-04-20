@@ -31,7 +31,7 @@ These instructions are following the steps prescribed by http://docs.openstack.o
   3.  Setup ssh keys  
     1.  Create key using ssh-keygen with no password.  Use osa-key as a name for the key (not id_rsa if running on local machine)
     2.  Push out keys to server vms and deployment vm.  File pushkeys.sh can be an example on doing this simply.
-    3.  Test passwordless ssh between deployment machine and nodes.
+    3.  Test passwordless ssh between deployment machine and nodes. (you may need to indicte your identity with the '-i' option pointing to the private key)
 
 
 ### Target Nodes
@@ -109,6 +109,51 @@ We will let the first node be the Cinder storage node...
 $ pvcreate --metadatasize 2048 /dev/sdb
 $ vgcreate cinder-volumes /dev/sdb
 ```
+
+#### Create LVM on Remaining Nodes
+First create a partition.  In this case, we will create an LVM partition.
+```
+$ fdisk /dev/sdb
+Command (m for help): n
+Select (default p): p
+Partition number (1-4, default 1): 1
+Command (m for help): t
+Selected partition 1
+Hex code (type L to list codes): 8e
+Command (m for help): p
+   Device Boot      Start         End      Blocks   Id  System
+/dev/sdb1            2048   104857599    52427776   8e  Linux LVM
+Command (m for help): w
+```
+
+Now, create a logical volume with file system...
+```
+$ pvcreate /dev/sdb1
+$ pvs
+$ vgcreate vmsvg /dev/sdb1
+$ vgs
+$ lvcreate --extents 100%FREE --name vms vmsvg
+$ lvs
+$ mkfs.ext4 /dev/sdb1
+```
+
+Mount the volume...
+```
+$mkdir /vms
+```
+Edit /etc/fstab to have this line -> `/dev/mapper/vmsvg-vms /vms              ext4    errors=remount-ro 0       1`
+
+```
+$ mount -a
+```
+You should now have this...
+```
+$ df /vms -ha
+Filesystem           Size  Used Avail Use% Mounted on
+/dev/mapper/vmsvg-vms   50G   52M   47G   1% /vms
+```
+
+Do this for each of the compute nodes in your playground.
 
 ---
 **STOP HERE!**
