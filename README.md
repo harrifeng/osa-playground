@@ -158,7 +158,7 @@ $ vgcreate vmsvg /dev/sdb1
 $ vgs
 $ lvcreate --extents 100%FREE --name vms vmsvg
 $ lvs
-$ mkfs.ext4 /dev/sdb1
+$ mkfs.ext4 /dev/mapper/vmsvg-vms
 ```
 
 Mount the volume...
