@@ -61,6 +61,7 @@ ansible all --private-key={key filename} -i ./hosts -a '/sbin/reboot' --become -
 
 #### Configure Networking
 First we need to configure the "front channel" bridge, br-host.  This will be on eth0 if you have been using the scripts and conventions of this repo.  In the following snippet, the eth0 interface is commented out and the _source_ line has been added.
+![alt-text](./docs/images/osa-playground-networking.png)
 ```
 # This file describes the network interfaces available on your system
 # and how to activate them. For more information, see interfaces(5).
