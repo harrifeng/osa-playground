@@ -1,7 +1,0 @@
-auto br-prv
-iface br-prv inet manual
-
-up ip l set br-prv up
-down ip l set br-prv down
-
-
