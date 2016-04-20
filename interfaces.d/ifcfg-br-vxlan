@@ -1,0 +1,5 @@
+auto br-vxlan
+iface br-vxlan inet static
+  bridge_ports eth1.1001
+  bridge_stp off
+  address 172.16.1.101/24

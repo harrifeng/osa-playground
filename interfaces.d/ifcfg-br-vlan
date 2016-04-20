@@ -1,0 +1,3 @@
+auto br-vlan
+iface br-vlan inet manual
+  bridge_ports eth1

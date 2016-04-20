@@ -1,0 +1,7 @@
+auto eth0
+iface eth0 inet manual
+
+up ip l set eth0 up
+down ip l set eth0 down
+
+
