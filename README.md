@@ -1,6 +1,6 @@
 # osa-playground
 ## Overview
-Playground to understand and develop OpenStack Ansible.
+Playground to understand and utilize OpenStack Ansible.
 
 ## Getting Started
 ### Required Setup
