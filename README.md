@@ -180,6 +180,13 @@ Filesystem           Size  Used Avail Use% Mounted on
 
 Do this for each of the compute nodes in your playground.
 
+#### Setup OpenStack Ansible Configuration 
+On the Deployment Host VM... 
+  1. cp -r openstack_deploy/ /etc/
+  2. cd /etc/openstack_deploy/
+  3. cp openstack_user_config.yml.example openstack_user_config.yml
+
+
 ---
 **STOP HERE!**
 ---
