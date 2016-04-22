@@ -70,9 +70,9 @@
 #
 # --------
 cidr_networks:
-  container: 172.16.0.0/24 		# br-mgmt
-  tunnel: 172.16.1.0/24 		# br-vxlan
-  storage: 172.16.2.0/24		# br-storage
+  container: 172.16.0.0/24      # br-mgmt
+  tunnel: 172.16.1.0/24         # br-vxlan
+  storage: 172.16.2.0/24        # br-storage
 
 #
 # Level: used_ips (optional)
@@ -100,12 +100,12 @@ cidr_networks:
 #
 # --------
 used_ips:
-  - 172.16.0.1				# Reserved for gateway
-  - "172.16.0.101,172.16.0.109"	 	# Reserved for Management IPs
-  - 172.16.1.1				# Reserved for gateway
-  - "172.16.1.101,172.16.1.109"		# Reserved for vxlan IPs
-  - 172.16.2.1				# Reserved for gateway
-  - "172.16.2.101,172.16.2.109"		# Reserved for vxlan IPs
+  - 172.16.0.1                          # Reserved for gateway
+  - "172.16.0.101,172.16.0.109"         # Reserved for Management IPs
+  - 172.16.1.1                          # Reserved for gateway
+  - "172.16.1.101,172.16.1.109"         # Reserved for vxlan IPs
+  - 172.16.2.1                          # Reserved for gateway
+  - "172.16.2.101,172.16.2.109"         # Reserved for vxlan IPs
 
 #
 # Level: global_overrides (required)
@@ -278,9 +278,9 @@ used_ips:
 #
 # --------
 global_overrides:
-  internal_lb_vip_address: 172.16.1.101			# Controller IP on Management
-  external_lb_vip_address: 192.168.0.101		# Controller IP on Host Network
-  # lb_name: logging					# Is this needed?
+  internal_lb_vip_address: 172.16.1.101            # Controller IP on Management
+  external_lb_vip_address: 192.168.0.101        # Controller IP on Host Network
+  # lb_name: logging                    # Is this needed?
   tunnel_bridge: "br-vxlan"
   management_bridge: "br-mgmt"
   provider_networks:
@@ -334,7 +334,7 @@ global_overrides:
         container_bridge: "br-vlan"
         container_type: "veth"
         container_interface: "eth12"
-        host_bind_override: "eth12"
+        host_bind_override: "eth12"        # I have no idea what this means...not in documentation
         type: "flat"
         net_name: "flat"
 
@@ -426,7 +426,7 @@ shared-infra_hosts:
 # --------
 os-infra_hosts:
   infra1:
-    ip: 172.16.0.101				# Controller on Management subnet
+    ip: 172.16.0.101                # Controller on Management subnet
 #
 # Level: identity_hosts (required)
 # List of target hosts on which to deploy the keystone service. Recommend
@@ -455,7 +455,7 @@ os-infra_hosts:
 # --------
 identity_hosts:
   infra1:
-    ip: 172.16.0.101				# Controller on Management subnet
+    ip: 172.16.0.101                # Controller on Management subnet
 #
 # Level: network_hosts (required)
 # List of target hosts on which to deploy neutron services. Recommend three
