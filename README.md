@@ -124,8 +124,7 @@ br-host		8000.080027ff9f6a	no		eth0
 br-mgmt		8000.080027ba5c11	no		eth1.1000
 br-storage		8000.080027ba5c11	no		eth1.1002
 br-vlan		8000.080027ba5c11	no		eth1
-br-vxlan		8000.080027ba5c11	no		eth1.1001
-
+br-vxlan		8000.080027ba5c11	no		eth1.1001 
 ```
   1. Done!
 
@@ -182,11 +181,18 @@ Filesystem           Size  Used Avail Use% Mounted on
 
 Do this for each of the compute nodes in your playground.
 
-#### Setup OpenStack Ansible Configuration 
+#### Setup OpenStack Ansible Configuration
+
 On the Deployment Host VM... 
   1. cp -r openstack_deploy/ /etc/
   2. cd /etc/openstack_deploy/
-  3. cp openstack_user_config.yml.example openstack_user_config.yml
+  3. cp openstack_user_config.yml.example openstack_user_config.yml.  *Note:* an example opestack_user_config.yml file is included in this repository which has values specific to a particular configuration...use carefully!
+  4. Generate the passwords and tokens.  *NOTE:* You may want to change the `keystone_auth_admin_password` to something that you can remember or type easily for non-production deployments (which this is).
+  
+  ```
+$ cd /etc/openstack_deploy 
+$ /opt/openstack-ansible/scripts/pw-token-gen.py --file user_secrets.yml 
+```
 
 
 ---
