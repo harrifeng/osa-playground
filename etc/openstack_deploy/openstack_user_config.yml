@@ -69,6 +69,11 @@
 #   snet: 172.29.248.0/22
 #
 # --------
+cidr_networks:
+  container: 172.16.0.0/24 		# br-mgmt
+  tunnel: 172.16.1.0/24 		# br-vxlan
+  storage: 172.16.2.0/24		# br-storage
+
 #
 # Level: used_ips (optional)
 # For each network in the 'cidr_networks' level, specify a list of IP addresses
@@ -94,6 +99,14 @@
 #   - "172.29.239.231,172.29.239.254"
 #
 # --------
+used_ips:
+  - 172.16.0.1				# Reserved for gateway
+  - "172.16.0.101,172.16.0.109"	 	# Reserved for Management IPs
+  - 172.16.1.1				# Reserved for gateway
+  - "172.16.1.101,172.16.1.109"		# Reserved for vxlan IPs
+  - 172.16.2.1				# Reserved for gateway
+  - "172.16.2.101,172.16.2.109"		# Reserved for vxlan IPs
+
 #
 # Level: global_overrides (required)
 # Contains global options that require customization for a deployment. For
@@ -264,6 +277,68 @@
 #         net_name: "flat"
 #
 # --------
+global_overrides:
+  internal_lb_vip_address: 172.16.1.101			# Controller IP on Management
+  external_lb_vip_address: 192.168.0.101		# Controller IP on Host Network
+  # lb_name: logging					# Is this needed?
+  tunnel_bridge: "br-vxlan"
+  management_bridge: "br-mgmt"
+  provider_networks:
+    - network:
+        group_binds:
+          - all_containers
+          - hosts
+        type: "raw"
+        container_bridge: "br-mgmt"
+        container_interface: "eth1"
+        container_type: "veth"
+        ip_from_q: "management"
+        is_container_address: true
+        is_ssh_address: true
+    - network:
+        group_binds:
+          - glance_api
+          - cinder_api
+          - cinder_volume
+          - nova_compute
+          # Uncomment the next line if using swift with a storage network.
+          # - swift_proxy
+        type: "raw"
+        container_bridge: "br-storage"
+        container_type: "veth"
+        container_interface: "eth2"
+        container_mtu: "9000"
+        ip_from_q: "storage"
+    - network:
+        group_binds:
+          - neutron_linuxbridge_agent
+        container_bridge: "br-vxlan"
+        container_type: "veth"
+        container_interface: "eth10"
+        ip_from_q: "tunnel"
+        type: "vxlan"
+        range: "1:1000"
+        net_name: "vxlan"
+    - network:
+        group_binds:
+          - neutron_linuxbridge_agent
+        container_bridge: "br-vlan"
+        container_type: "veth"
+        container_interface: "eth11"
+        type: "vlan"
+        range: "1:1"
+        net_name: "vlan"
+    - network:
+        group_binds:
+          - neutron_linuxbridge_agent
+        container_bridge: "br-vlan"
+        container_type: "veth"
+        container_interface: "eth12"
+        host_bind_override: "eth12"
+        type: "flat"
+        net_name: "flat"
+
+
 #
 # Level: shared-infra_hosts (required)
 # List of target hosts on which to deploy shared infrastructure services
@@ -290,6 +365,9 @@
 #     ip: 172.29.236.103
 #
 # --------
+shared-infra_hosts:
+  infra1:
+    ip: 172.16.0.101
 #
 # Level: repo-infra_hosts (optional)
 # List of target hosts on which to deploy the package repository. Recommend
@@ -346,6 +424,9 @@
 #     ip: 172.29.236.102
 #
 # --------
+os-infra_hosts:
+  infra1:
+    ip: 172.16.0.101				# Controller on Management subnet
 #
 # Level: identity_hosts (required)
 # List of target hosts on which to deploy the keystone service. Recommend
@@ -372,6 +453,9 @@
 #     ip: 172.29.236.103
 #
 # --------
+identity_hosts:
+  infra1:
+    ip: 172.16.0.101				# Controller on Management subnet
 #
 # Level: network_hosts (required)
 # List of target hosts on which to deploy neutron services. Recommend three
@@ -398,6 +482,9 @@
 #     ip: 172.29.236.103
 #
 # --------
+network_hosts:
+  infra1:
+    ip: 172.29.236.101
 #
 # Level: compute_hosts (required)
 # List of target hosts on which to deploy the nova compute service. Recommend
@@ -420,6 +507,9 @@
 #     ip: 172.29.236.111
 #
 # --------
+compute_hosts:
+  compute1:
+    ip: 172.16.0.102
 #
 # Level: storage-infra_hosts (required)
 # List of target hosts on which to deploy the cinder API. Recommend three
@@ -446,6 +536,9 @@
 #     ip: 172.29.236.103
 #
 # --------
+storage-infra_hosts:
+  infra1:
+    ip: 172.16.0.101
 #
 # Level: storage_hosts (required)
 # List of target hosts on which to deploy the cinder volume service. Recommend
@@ -621,6 +714,16 @@
 #
 #
 # --------
+storage_hosts:
+  storage1:
+    ip: 172.16.0.101
+  container_vars:
+    cinder_backends:
+      limit_container_types: cinder_volume
+      lvm:
+        volume_group: cinder-volumes
+        volume_driver: cinder.volume.drivers.lvm.LVMISCSIDriver
+        volume_backend_name: LVM_iSCSI
 #
 # Level: log_hosts (required)
 # List of target hosts on which to deploy logging services. Recommend
@@ -639,4 +742,7 @@
 #
 # log_hosts:
 #   log1:
-#     ip: 172.29.236.131
+# ---------
+log_hosts:
+  log1:
+    ip: 172.16.0.101
