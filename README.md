@@ -1,6 +1,6 @@
 # osa-playground
 ## Overview
-Playground to understand and develop OpenStack Ansible.
+Playground to understand and utilize OpenStack Ansible.
 
 ## Getting Started
 ### Required Setup
@@ -61,6 +61,7 @@ ansible all --private-key={key filename} -i ./hosts -a '/sbin/reboot' --become -
 
 #### Configure Networking
 First we need to configure the "front channel" bridge, br-host.  This will be on eth0 if you have been using the scripts and conventions of this repo.  In the following snippet, the eth0 interface is commented out and the _source_ line has been added.
+![alt-text](./docs/images/osa-playground-networking.png)
 ```
 # This file describes the network interfaces available on your system
 # and how to activate them. For more information, see interfaces(5).
@@ -103,6 +104,30 @@ Verify that you have a valid br-host with the static IP.
 $ ip a
 ```
 
+*OK*, we are now going to create the Linux bridges on _all_ nodes so that they communicate like the following diagram...(TBD insert diagram)
+
+This repository has a [directory](./interfaces.d) that contains a single set of example network configurations. Following the next steps carefully should result in a proper network setup.
+  1. Copy the files from this repository's [interfaces.d](./interfaces.d) directory to /etc/network/interfaces.d on the node
+  2. Update the IP addresses in ifcfg-br-mgmt and ifcfg-br-vxlan to give these bridges IPs on the management subnet and vxlan subnet.  It may be helpful to use a convention that will help identify the node by IP on these VLAN subnets.  For example node1->172.16.0.1 (on VLAN 1000, mgmt), nodex->172.16.0.x (on VLAN 1000, mgmt) *AND* node1->172.16.1.1 (on VLAN 1001, vxlan), nodex->172.16.1.x (on VLAN 1001, vxlan)
+  3. Now bring up the bridges!
+  
+  
+  ```
+$ ifup br-mgmt; ifup br-vlan; ifup br-vxlan
+```
+  4. Verify the bridges...
+  
+  ```
+$ brctl show
+bridge name	bridge id		STP enabled	interfaces
+br-host		8000.080027d00dc1	no		eth0
+br-mgmt		8000.080027760fc7	no		eth1.1000
+br-vlan		8000.080027760fc7	no		eth1
+br-vxlan		8000.080027760fc7	no		eth1.1001
+```
+  1. Done!
+
+
 #### Configure LVM on Node1
 We will let the first node be the Cinder storage node...
 ```
@@ -134,7 +159,7 @@ $ vgcreate vmsvg /dev/sdb1
 $ vgs
 $ lvcreate --extents 100%FREE --name vms vmsvg
 $ lvs
-$ mkfs.ext4 /dev/sdb1
+$ mkfs.ext4 /dev/mapper/vmsvg-vms
 ```
 
 Mount the volume...
@@ -154,6 +179,13 @@ Filesystem           Size  Used Avail Use% Mounted on
 ```
 
 Do this for each of the compute nodes in your playground.
+
+#### Setup OpenStack Ansible Configuration 
+On the Deployment Host VM... 
+  1. cp -r openstack_deploy/ /etc/
+  2. cd /etc/openstack_deploy/
+  3. cp openstack_user_config.yml.example openstack_user_config.yml
+
 
 ---
 **STOP HERE!**
