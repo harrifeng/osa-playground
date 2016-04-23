@@ -100,6 +100,7 @@ cidr_networks:
 #
 # --------
 used_ips:
+  - 172.16.0.12                         # Reserved for deployment host
   - 172.16.0.1                          # Reserved for gateway
   - "172.16.0.101,172.16.0.109"         # Reserved for Management IPs
   - 172.16.1.1                          # Reserved for gateway
@@ -278,11 +279,12 @@ used_ips:
 #
 # --------
 global_overrides:
-  internal_lb_vip_address: 172.16.1.101            # Controller IP on Management
+  internal_lb_vip_address: 172.16.0.101            # Controller IP on Management
   external_lb_vip_address: 192.168.0.101        # Controller IP on Host Network
   # lb_name: logging                    # Is this needed?
   tunnel_bridge: "br-vxlan"
   management_bridge: "br-mgmt"
+
   provider_networks:
     - network:
         group_binds:
@@ -292,7 +294,7 @@ global_overrides:
         container_bridge: "br-mgmt"
         container_interface: "eth1"
         container_type: "veth"
-        ip_from_q: "management"
+        ip_from_q: "container"
         is_container_address: true
         is_ssh_address: true
     - network:
@@ -484,7 +486,7 @@ identity_hosts:
 # --------
 network_hosts:
   infra1:
-    ip: 172.29.236.101
+    ip: 172.16.0.101
 #
 # Level: compute_hosts (required)
 # List of target hosts on which to deploy the nova compute service. Recommend
@@ -510,6 +512,8 @@ network_hosts:
 compute_hosts:
   compute1:
     ip: 172.16.0.102
+  compute2:
+    ip: 172.16.0.103
 #
 # Level: storage-infra_hosts (required)
 # List of target hosts on which to deploy the cinder API. Recommend three
