@@ -102,11 +102,11 @@ cidr_networks:
 used_ips:
   - 172.16.0.12                         # Reserved for deployment host
   - 172.16.0.1                          # Reserved for gateway
-  - "172.16.0.101,172.16.0.109"         # Reserved for Management IPs
+  - 172.16.0.101,172.16.0.109         # Reserved for Management IPs
   - 172.16.1.1                          # Reserved for gateway
-  - "172.16.1.101,172.16.1.109"         # Reserved for vxlan IPs
+  - 172.16.1.101,172.16.1.109         # Reserved for vxlan IPs
   - 172.16.2.1                          # Reserved for gateway
-  - "172.16.2.101,172.16.2.109"         # Reserved for vxlan IPs
+  - "172.16.2.101,172.16.2.109"         # Reserved for br-storage IPs
 
 #
 # Level: global_overrides (required)
@@ -281,10 +281,8 @@ used_ips:
 global_overrides:
   internal_lb_vip_address: 172.16.0.101            # Controller IP on Management
   external_lb_vip_address: 192.168.0.101        # Controller IP on Host Network
-  # lb_name: logging                    # Is this needed?
   tunnel_bridge: "br-vxlan"
   management_bridge: "br-mgmt"
-
   provider_networks:
     - network:
         group_binds:
@@ -718,16 +716,20 @@ storage-infra_hosts:
 #
 #
 # --------
+# RLJ
 storage_hosts:
   storage1:
     ip: 172.16.0.101
-  container_vars:
-    cinder_backends:
-      limit_container_types: cinder_volume
-      lvm:
-        volume_group: cinder-volumes
-        volume_driver: cinder.volume.drivers.lvm.LVMISCSIDriver
-        volume_backend_name: LVM_iSCSI
+    container_vars:
+      cinder_storage_availability_zone: cinderAZ_1
+      cinder_default_availability_zone: cinderAZ_1
+      cinder_backends:
+        limit_container_types: cinder_volume
+        lvm:
+          volume_group: cinder-volumes
+          volume_driver: cinder.volume.drivers.lvm.LVMISCSIDriver
+          volume_backend_name: LVM_iSCSI
+
 #
 # Level: log_hosts (required)
 # List of target hosts on which to deploy logging services. Recommend
