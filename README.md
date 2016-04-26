@@ -194,6 +194,13 @@ $ cd /etc/openstack_deploy
 $ /opt/openstack-ansible/scripts/pw-token-gen.py --file user_secrets.yml 
 ```
 
+  1.  Test syntax of yaml
+  
+  ```
+$ cd /opt/openstack-ansible/playbooks
+$ openstack-ansible setup-infrastructure.yml --syntax-check
+```
+
 
 ---
 **STOP HERE!**
