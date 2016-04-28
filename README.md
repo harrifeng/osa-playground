@@ -203,6 +203,11 @@ $ /opt/openstack-ansible/scripts/pw-token-gen.py --file user_secrets.yml
 $ cd /opt/openstack-ansible/playbooks
 $ openstack-ansible setup-infrastructure.yml --syntax-check
 ```
+  1.  Setup hosts
+  
+  ```
+$ openstack-ansible setup-hosts.yml
+```
 
 
 ---
