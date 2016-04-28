@@ -61,7 +61,7 @@ verbose: false
 
 # RLJ: this was not in the file originally.  We want to run in VirtualBox,
 #      so this should be correct (instead of KVM for bare metal installs)
-nova_virt_type: qemu            # RLJ: could not find any documentation on this.
+#nova_virt_type: qemu            # RLJ: could not find any documentation on this.
 
 # If you wish to change the dhcp_domain configured for both nova and neutron
 # dhcp_domain: openstacklocal
@@ -145,7 +145,7 @@ nova_virt_type: qemu            # RLJ: could not find any documentation on this.
 ## SSH connection wait time
 # If an increased delay for the ssh connection check is desired,
 # uncomment this variable and set it appropriately.
-#ssh_delay: 5
+ssh_delay: 15
 
 
 ## HAProxy

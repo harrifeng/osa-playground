@@ -366,7 +366,7 @@ global_overrides:
 #
 # --------
 shared-infra_hosts:
-  infra1:
+  controller1:
     ip: 172.16.0.101
 #
 # Level: repo-infra_hosts (optional)
@@ -425,7 +425,7 @@ shared-infra_hosts:
 #
 # --------
 os-infra_hosts:
-  infra1:
+  controller1:
     ip: 172.16.0.101                # Controller on Management subnet
 #
 # Level: identity_hosts (required)
@@ -454,7 +454,7 @@ os-infra_hosts:
 #
 # --------
 identity_hosts:
-  infra1:
+  controller1:
     ip: 172.16.0.101                # Controller on Management subnet
 #
 # Level: network_hosts (required)
@@ -483,7 +483,7 @@ identity_hosts:
 #
 # --------
 network_hosts:
-  infra1:
+  controller1:
     ip: 172.16.0.101
 #
 # Level: compute_hosts (required)
@@ -539,7 +539,7 @@ compute_hosts:
 #
 # --------
 storage-infra_hosts:
-  infra1:
+  controller1:
     ip: 172.16.0.101
 #
 # Level: storage_hosts (required)
@@ -718,7 +718,7 @@ storage-infra_hosts:
 # --------
 # RLJ
 storage_hosts:
-  storage1:
+  controller1:
     ip: 172.16.0.101
     container_vars:
       cinder_storage_availability_zone: cinderAZ_1
@@ -750,5 +750,5 @@ storage_hosts:
 #   log1:
 # ---------
 log_hosts:
-  log1:
+  controller1:
     ip: 172.16.0.101
