@@ -208,6 +208,11 @@ $ openstack-ansible setup-infrastructure.yml --syntax-check
   ```
 $ openstack-ansible setup-hosts.yml
 ```
+  1. Setup infrastructure
+  
+  ```
+$ openstack-ansible setup-infrastructure.yml
+```
 
 
 ---
