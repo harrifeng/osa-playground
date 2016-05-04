@@ -247,3 +247,9 @@ $ openstack-ansible setup-infrastructure.yml
 ~~You should also verify that the **data** drive for each VM has been created and mounted.~~
 
 ~~**FYI:  `vagrant destroy` can cause the loss of your hard work.  Be cautious where you save configuration files and data that you need to persist.**~~
+
+~~** I ran into an issue where the linux kernel did not have vhost_net installed or enabled.  Run these commands as root to be sure...
+  1. apt-get update -y
+  2. apt-get install linux-image-extra-3.13.0-83-generic
+  3. apt-get install linux-image-extra-virtual -y
+**~~
