@@ -1,0 +1,5 @@
+auto br-storage
+iface br-storage inet static
+  bridge_ports eth2.1002
+  bridge_stp off
+  address 172.16.2.10/24

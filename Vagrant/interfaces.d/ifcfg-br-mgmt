@@ -1,0 +1,4 @@
+auto br-mgmt
+iface br-mgmt inet static
+  bridge_ports eth2.1000
+  address 172.16.0.10/24
