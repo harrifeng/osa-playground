@@ -96,6 +96,37 @@ Verify that the interfaces have the correct IP addresses, can ping reach outside
     
 #### Running OpenStack Ansible ####
 
+On the Deployment Host VM (controller1)... 
+  1. cp -r openstack_deploy/ /etc/
+  2. cd /etc/openstack_deploy/
+  3. cp openstack_user_config.yml.example openstack_user_config.yml.  *Note:* an example opestack_user_config.yml file is included in this repository which has values specific to a particular configuration...use carefully!
+  4. Generate the passwords and tokens.  *NOTE:* You may want to change the `keystone_auth_admin_password` to something that you can remember or type easily for non-production deployments (which this is).
+  
+  ```
+$ cd /etc/openstack_deploy 
+$ /opt/openstack-ansible/scripts/pw-token-gen.py --file user_secrets.yml 
+```
+
+  1.  Test syntax of yaml
+  
+  ```
+$ cd /opt/openstack-ansible/playbooks
+$ openstack-ansible setup-infrastructure.yml --syntax-check
+```
+  1.  Setup hosts
+  
+  ```
+$ openstack-ansible setup-hosts.yml
+```
+  1. Setup infrastructure
+  
+  ```
+$ openstack-ansible setup-infrastructure.yml
+```
+
+
+
+
 #### Extra Notes ####
 **I ran into an issue where the linux kernel did not have vhost_net installed or enabled.  Run these commands as root to be sure...**
   1. apt-get update -y
