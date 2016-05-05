@@ -1,6 +1,8 @@
 ### Vagrant Approach (development on hold)
 **NOTE: Using Vagrant introduced a few challenges that were killing progress toward the goal.  So, the testbed will be simplified to use straight VirtualBox and Ubuntu 14.04.  The Vagrant approach may be revisited and the files in this repository associated with approach will remain but will not be used until the challenges are resolved.**
 
+#### Environment Setup ####
+
 This test bed uses Vagrant and VirtualBox running on an Ubuntu 14.04 host.  The VMs are also Ubuntu 14.04.  At the creation time of this project, Vagrant 1.7.2 was used and VirtualBox 4.3.36r105129.  Newer versions of these should work fine.
 
 Once configured with Vagrant and VirtualBox on your host machine, please get the Ubuntu Vagrant box.
@@ -92,11 +94,12 @@ Verify that the interfaces have the correct IP addresses, can ping reach outside
     br-vlan		8000.080027ee5a00	no		eth2
     br-vxlan		8000.080027ee5a00	no		eth2.1001
     
+#### Running OpenStack Ansible ####
 
-#### Extra notes ####
-** I ran into an issue where the linux kernel did not have vhost_net installed or enabled.  Run these commands as root to be sure...
+#### Extra Notes ####
+**I ran into an issue where the linux kernel did not have vhost_net installed or enabled.  Run these commands as root to be sure...**
   1. apt-get update -y
   2. apt-get install linux-image-extra-3.13.0-83-generic
   3. apt-get install linux-image-extra-virtual -y
-**
+
 
