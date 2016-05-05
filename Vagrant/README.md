@@ -70,7 +70,10 @@ Edit ifcfg-br-host, ifcfg-br-mgmt, ifcfg-br-storage, ifcfg-br-vxlan to have a st
 
 Edit the interfaces file to have the line
 
-  source /etc/network/interfaces.d/*
+    source /etc/network/interfaces.d/*
+
+Get the network bridges up
+    
     $ cd interfaces.d
     $ cp /root/interfaces.d/ifcfg-* .
     $ ifup br-host; ifup br-mgmt; ifup br-storage; ifup br-vxlan; ifup br-vlan
