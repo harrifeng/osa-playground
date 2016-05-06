@@ -118,6 +118,13 @@ $ openstack-ansible setup-infrastructure.yml --syntax-check
   ```
 $ openstack-ansible setup-hosts.yml
 ```
+
+  1. Install HAProxy
+ 
+  ```
+$ openstack-ansible playbooks/install-haproxy.yml
+```
+
   1. Setup infrastructure
   
   ```
