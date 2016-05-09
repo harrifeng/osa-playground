@@ -131,6 +131,20 @@ $ openstack-ansible haproxy-install.yml
 $ openstack-ansible setup-infrastructure.yml
 ```
 
+*FAILED*:
+TASK: [galera_client | Install pip packages] ********************************** 
+failed: [controller1_galera_container-2333ce89] => (item=MySQL-python) => {"attempts": 5, "cmd": "/usr/local/bin/pip install MySQL-python", "failed": true, "item": "MySQL-python"}
+msg: Task failed as maximum retries was encountered
+failed: [controller1_galera_container-2333ce89] => (item=python-memcached) => {"attempts": 5, "cmd": "/usr/local/bin/pip install python-memcached", "failed": true, "item": "python-memcached"}
+msg: Task failed as maximum retries was encountered
+failed: [controller1_galera_container-2333ce89] => (item=pycrypto) => {"attempts": 5, "cmd": "/usr/local/bin/pip install pycrypto", "failed": true, "item": "pycrypto"}
+msg: Task failed as maximum retries was encountered
+
+FATAL: all hosts have already failed -- aborting
+
+
+*STATUS:*  Moving on to other projects...the guides that I am following make no mention of configuring repositories which is what I think is holding this up.
+
 
 
 
